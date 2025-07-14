@@ -23,6 +23,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #3rd party apps
+    'widget_tweaks',
+
+    # custom apps
+    'core',
+    'projects',
+    'estimates',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +99,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # settings.py - Add MEDIA settings
 MEDIA_URL = '/media/'

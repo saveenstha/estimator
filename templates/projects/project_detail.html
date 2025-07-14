@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{{ project.name }}</h2>
+  <p>Client: {{ project.client }}</p>
+  <p>Budget: Rs. {{ project.budget }}</p>
+  <h3>Estimate Breakdown</h3>
+  <ul>
+    {% for component in components %}
+      <li>Floor {{ component.floor_number }} - {{ component.material.name }}: {{ component.quantity }} {{ component.material.unit }} (Rs. {{ component.cost }})</li>
+    {% endfor %}
+  </ul>
+  <p><strong>Total Estimated Cost: Rs. {{ total_cost }}</strong></p>
+{% endblock %}

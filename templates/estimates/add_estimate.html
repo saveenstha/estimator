@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Add Estimate Component</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Add Estimate</button>
+    </form>
+    <a href="{% url 'project-list' %}" class="btn btn-secondary mt-3">Back to Projects</a>
+  </div>
+{% endblock %}

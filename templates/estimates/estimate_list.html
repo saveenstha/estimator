@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-4">
+    <h2>All Estimates</h2>
+    <form method="get" class="form-inline mb-3">
+        <div class="row">
+            <div class="col ">
+              <select name="project" class="form-control mr-2">
+                <option value="">-- Filter by Project --</option>
+                {% for proj in projects %}
+                  <option
+                          value="{{ proj.id }}"
+                          {% if selected_project == proj.id|stringformat:"s" %}
+                          selected
+                          {% endif %}>
+                      {{ proj.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col ">
+              <select name="material" class="form-control mr-2">
+                <option value="">-- Filter by Material --</option>
+                {% for mat in materials %}
+                  <option value="{{ mat.id }}"
+                          {% if selected_material == mat.id|stringformat:"s" %}
+                          selected
+                          {% endif %}>
+                      {{ mat.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary">Apply</button>
+              <a href="{% url 'estimate-list' %}" class="btn btn-secondary ml-2">Clear</a>
+
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Project</th><th>Floor</th><th>Material</th><th>Quantity</th><th>Cost</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for estimate in estimates %}
+        <tr>
+          <td>{{ estimate.project.name }}</td>
+          <td>{{ estimate.floor_number }}</td>
+          <td>{{ estimate.material.name }}</td>
+          <td>{{ estimate.quantity }}</td>
+          <td>{{ estimate.cost }}</td>
+          <td>
+            <a href="{% url 'estimate-detail' estimate.id %}" class="btn btn-sm btn-info">View</a>
+            <a href="{% url 'estimate-edit' estimate.id %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'estimate-delete' estimate.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{% url 'estimate-add' %}" class="btn btn-primary">Add Estimate</a>
+    <a href="{% url 'upload-csv' %}" class="btn btn-secondary">Upload CSV</a>
+  </div>
+{% endblock %}

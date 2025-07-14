@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} Estimator System | Home {% endblock %}
+
+{% block content %}
+  <h1>Home</h1>
+  <ul>
+    {% for project in projects %}
+<!--      <li><a href="{% url 'project_detail' project.id %}">{{ project.name }}</a></li>-->
+    {% endfor %}
+    <a href="{% url 'project-add' %}" class="btn btn-primary">Add Project</a>
+    <a href="{% url 'material-add' %}" class="btn btn-secondary">Add Material</a>
+  </ul>
+{% endblock %}

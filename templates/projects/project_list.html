@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Projects</h1>
+  <ul class="list-group">
+    {% for project in projects %}
+      <li class="list-group-item">
+          <a href="{% url 'project-detail' project.id %}" class="link-offset-2 link-underline link-underline-opacity-0" >
+              {{ project.name }}
+          </a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'add-estimate' %}" class="btn btn-primary">Add Estimate</a>
+  <a href="{% url 'upload-csv' %}" class="btn btn-secondary">Upload CSV</a>
+{% endblock %}

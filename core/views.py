@@ -3,4 +3,4 @@ from django.views.generic import View, ListView, CreateView, DetailView, UpdateV
 
 # Create your views here.
 class IndexView(TemplateView):
-    template_name = 'core/index.html'
+    template_name = 'core/home.html'

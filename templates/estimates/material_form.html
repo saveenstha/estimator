@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}{% if object %}Edit{% else %}Add{% endif %} Material{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{% if object %}Edit{% else %}Add{% endif %} Material</h2>
+
+<form method="post" class="card p-4 shadow-sm">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="id_name" class="form-label">Name</label>
+    {{ form.name|add_class:"form-control" }}
+    {% if form.name.errors %}
+      <div class="text-danger small">{{ form.name.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="id_unit" class="form-label">Unit</label>
+    {{ form.unit|add_class:"form-control" }}
+    {% if form.unit.errors %}
+      <div class="text-danger small">{{ form.unit.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="id_rate" class="form-label">Rate (Rs)</label>
+    {{ form.rate|add_class:"form-control" }}
+    {% if form.rate.errors %}
+      <div class="text-danger small">{{ form.rate.errors.0 }}</div>
+    {% endif %}
+  </div>
+    <div class="form-row">
+      <button type="submit" class="btn btn-success mb-2 ">Save</button>
+      <a href="{% url 'material-list' %}" class="btn btn-secondary mb-2">Cancel</a>
+    </div>
+</form>
+
+{% endblock %}
