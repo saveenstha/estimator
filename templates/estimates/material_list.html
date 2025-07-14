@@ -12,6 +12,35 @@
 
   <a href="{% url 'material-add' %}" class="btn btn-success">+ Add Material</a>
 
+    <!-- material pagination -->
+    <nav aria-label="Material pagination">
+      <ul class="pagination justify-content-center">
+        {% if materials.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ materials.previous_page_number }}&q={{ request.GET.q }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        {% for num in materials.paginator.page_range %}
+          <li class="page-item {% if num == materials.number %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a>
+          </li>
+        {% endfor %}
+
+        {% if materials.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ materials.next_page_number }}&q={{ request.GET.q }}">Next</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+
+    <!-- material data -->
 <table class="table table-striped table-bordered">
   <thead class="table-light">
     <tr>

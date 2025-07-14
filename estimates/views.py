@@ -14,6 +14,7 @@ class MaterialListView(ListView):
     model = Material
     template_name = 'estimates/material_list.html'
     context_object_name = 'materials'
+    paginate_by = 10
 
     def get_queryset(self):
         query = self.request.GET.get("q")
