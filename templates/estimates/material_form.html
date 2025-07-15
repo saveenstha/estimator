@@ -19,6 +19,14 @@
   </div>
 
   <div class="mb-3">
+    <label for="id_rate" class="form-label">Category </label>
+    {{ form.category|add_class:"form-control" }}
+    {% if form.rate.errors %}
+      <div class="text-danger small">{{ form.category.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
     <label for="id_unit" class="form-label">Unit</label>
     {{ form.unit|add_class:"form-control" }}
     {% if form.unit.errors %}
@@ -33,6 +41,7 @@
       <div class="text-danger small">{{ form.rate.errors.0 }}</div>
     {% endif %}
   </div>
+
     <div class="form-row">
       <button type="submit" class="btn btn-success mb-2 ">Save</button>
       <a href="{% url 'material-list' %}" class="btn btn-secondary mb-2">Cancel</a>

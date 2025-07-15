@@ -9,31 +9,22 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'project-list' %}">Projects</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'estimate-list' %}">Estimates</a>
-        </li>
-
-
-    {% if user.is_authenticated %}
-
-        <div class="dropdown-menu dropdown-menu-right">
-            dropdown
-            <a href="#" class="dropdown-item">Profile</a>
-            <div class="dropdown-divider"></div>
-            <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
-        </div>
-    {% endif %}
 
       <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
     {% if user.is_authenticated %}
+
     <li class="nav-item d-none d-sm-inline-block">
       <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'project-list' %}">Projects</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'estimate-list' %}">Estimates</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'material-list' %}">Materials</a>
     </li>
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">

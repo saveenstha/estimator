@@ -2,8 +2,8 @@ from django.urls import path
 from .views import (
     EstimateComponentCreateView, EstimateListView, EstimateDetailView, EstimateUpdateView,
     EstimateCreateView, EstimateDeleteView, EstimateCSVUploadView,
-    MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
-
+    MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView,
+    ProcurementListView, ProcurementCreateView, ProcurementDeleteView, ProcurementDetailView, ProcurementUpdateView
 )
 
 urlpatterns = [
@@ -19,4 +19,10 @@ urlpatterns = [
     path('materials/add/', MaterialCreateView.as_view(), name='material-add'),
     path('materials/<int:pk>/edit/', MaterialUpdateView.as_view(), name='material-edit'),
     path('materials/<int:pk>/delete/', MaterialDeleteView.as_view(), name='material-delete'),
+
+    path('procurements/', ProcurementListView.as_view(), name='procurement-list'),
+    path('procurements/add/', ProcurementCreateView.as_view(), name='procurement-add'),
+    path('procurements/<int:pk>/', ProcurementDetailView.as_view(), name='procurement-detail'),
+    path('procurements/<int:pk>/edit/', ProcurementUpdateView.as_view(), name='procurement-edit'),
+    path('procurements/<int:pk>/delete/', ProcurementDeleteView.as_view(), name='procurement-delete'),
 ]

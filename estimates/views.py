@@ -1,8 +1,8 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
-from .models import EstimateComponent, Material
-from .forms import EstimateComponentForm, EstimateCSVUploadForm, MaterialForm
+from .models import EstimateComponent, Material, MaterialCategory, Procurement
+from .forms import EstimateComponentForm, EstimateCSVUploadForm, MaterialForm, ProcurementForm
 from projects.models import Project
 
 import csv
@@ -17,12 +17,15 @@ class MaterialListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        query = self.request.GET.get("q")
-        qs = super().get_queryset()
-        if query:
-            qs = qs.filter(Q(name__icontains=query))
-        return qs
+        category = self.request.GET.get('category')
+        if category:
+            return Material.objects.filter(category__name=category)
+        return Material.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = MaterialCategory.objects.all()
+        return context
 
 class MaterialCreateView(CreateView):
     model = Material
@@ -91,6 +94,34 @@ class EstimateDeleteView(DeleteView):
     success_url = reverse_lazy('estimate-list')
 
 
+# Procurement CRUD
+class ProcurementListView(ListView):
+    model = Procurement
+    template_name = 'estimates/procurement_list.html'
+    context_object_name = 'procurements'
+
+class ProcurementCreateView(CreateView):
+    model = Procurement
+    form_class = ProcurementForm
+    template_name = 'estimates/procurement_form.html'
+    success_url = reverse_lazy('procurement-list')
+
+class ProcurementUpdateView(UpdateView):
+    model = Procurement
+    form_class = ProcurementForm
+    template_name = 'estimates/procurement_form.html'
+    success_url = reverse_lazy('procurement-list')
+
+class ProcurementDeleteView(DeleteView):
+    model = Procurement
+    template_name = 'estimates/procurement_confirm_delete.html'
+    success_url = reverse_lazy('procurement-list')
+
+class ProcurementDetailView(DetailView):
+    model = Procurement
+    template_name = 'estimates/procurement_detail.html'
+
+# Estimate Component CRUD
 class EstimateComponentCreateView(CreateView):
     model = EstimateComponent
     form_class = EstimateComponentForm

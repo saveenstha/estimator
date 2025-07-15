@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Procurement Detail</h2>
+  <ul class="list-group">
+    <li class="list-group-item">Project: {{ object.project.name }}</li>
+    <li class="list-group-item">Material: {{ object.material.name }}</li>
+    <li class="list-group-item">Required: {{ object.quantity_required }}</li>
+    <li class="list-group-item">Procured: {{ object.quantity_procured }}</li>
+    <li class="list-group-item">Progress: {{ object.progress_percent }}%</li>
+    <li class="list-group-item">Cost: Rs. {{ object.cost }}</li>
+    <li class="list-group-item">Supplier: {{ object.supplier }}</li>
+    <li class="list-group-item">Date: {{ object.date_procured }}</li>
+  </ul>
+</div>
+{% endblock %}

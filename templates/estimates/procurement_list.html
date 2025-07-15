@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Procurement List</h2>
+  <a href="{% url 'procurement-add' %}" class="btn btn-primary mb-3">Add Procurement</a>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Material</th>
+        <th>Required</th>
+        <th>Procured</th>
+        <th>Progress</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in procurements %}
+      <tr>
+        <td>{{ p.project.name }}</td>
+        <td>{{ p.material.name }}</td>
+        <td>{{ p.quantity_required }}</td>
+        <td>{{ p.quantity_procured }}</td>
+        <td>{{ p.progress_percent }}%</td>
+        <td>
+          <a href="{% url 'procurement-detail' p.id %}" class="btn btn-sm btn-info">View</a>
+          <a href="{% url 'procurement-edit' p.id %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'procurement-delete' p.id %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-muted">No records found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

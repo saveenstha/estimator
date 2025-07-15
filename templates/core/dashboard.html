@@ -3,38 +3,6 @@
 
 {% block content %}
 <h2>Dashboard</h2>
-
-<h4 class="mt-4">Current Projects</h4>
-<ul class="list-group mb-3">
-  {% for project in current_projects %}
-    <li class="list-group-item">
-      <strong>{{ project.name }}</strong> - Rs. {{ project.budget }}
-    </li>
-  {% empty %}
-    <li class="list-group-item text-muted">No current projects</li>
-  {% endfor %}
-</ul>
-
-<h4>Finished Projects</h4>
-<ul class="list-group mb-3">
-  {% for project in finished_projects %}
-    <li class="list-group-item">
-      {{ project.name }} (Completed)
-    </li>
-  {% empty %}
-    <li class="list-group-item text-muted">No finished projects</li>
-  {% endfor %}
-</ul>
-
-<h4>Upcoming Projects</h4>
-<ul class="list-group">
-  {% for project in upcoming_projects %}
-    <li class="list-group-item">{{ project.name }} (Planned)</li>
-  {% empty %}
-    <li class="list-group-item text-muted">No upcoming projects</li>
-  {% endfor %}
-</ul>
-
     <!-- chart -->
     <canvas id="chartBudgets" width="400" height="160"></canvas>
     <h3 class="mt-5">Projects by Status</h3>
@@ -52,6 +20,13 @@
           </div>
           {% endfor %}
 </div>
+    <h4 class="mt-5">Procurement Overview</h4>
+    <ul class="list-group mb-3">
+      <li class="list-group-item">Total Procurement Records: {{ total_procurements }}</li>
+      <li class="list-group-item text-success">Fulfilled: {{ fulfilled }}</li>
+      <li class="list-group-item text-danger">Pending: {{ pending }}</li>
+    </ul>
+    <a href="{% url 'procurement-list' %}" class="btn btn-outline-primary">View All Procurements</a>
 
 
 {% endblock %}
