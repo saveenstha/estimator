@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<h4 class="mt-4">Current Projects</h4>
+<ul class="list-group mb-3">
+  {% for project in current_projects %}
+    <li class="list-group-item">
+      <strong>{{ project.name }}</strong> - Rs. {{ project.budget }}
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">No current projects</li>
+  {% endfor %}
+</ul>
+
+<h4>Finished Projects</h4>
+<ul class="list-group mb-3">
+  {% for project in finished_projects %}
+    <li class="list-group-item">
+      {{ project.name }} (Completed)
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">No finished projects</li>
+  {% endfor %}
+</ul>
+
+<h4>Upcoming Projects</h4>
+<ul class="list-group">
+  {% for project in upcoming_projects %}
+    <li class="list-group-item">{{ project.name }} (Planned)</li>
+  {% empty %}
+    <li class="list-group-item text-muted">No upcoming projects</li>
+  {% endfor %}
+</ul>
+
+    <!-- chart -->
+    <canvas id="chartBudgets" width="400" height="160"></canvas>
+    <h3 class="mt-5">Projects by Status</h3>
+        <div class="row">
+          {% for status, qs in status_projects %}
+          <div class="col-md-4">
+            <h5>{{ status }} ({{ qs|length }})</h5>
+            <ul class="list-group">
+              {% for p in qs %}
+              <li class="list-group-item">{{ p.name }} – Rs. {{ p.budget }}</li>
+              {% empty %}
+              <li class="list-group-item text-muted">No {{ status|lower }} projects.</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+</div>
+
+
+{% endblock %}
+    <script>
+        const data = {
+          labels: {{ labels|safe }},
+          datasets: [{
+            label: 'Budget per Project',
+            backgroundColor: 'rgba(54,73,93,.5)',
+            borderColor: '#36495d',
+            data: {{ budgets|safe }},
+          }]
+        };
+        new Chart(document.getElementById('chartBudgets'), {
+          type: 'bar',
+          data: data,
+          options: {}
+        });
+        </script>

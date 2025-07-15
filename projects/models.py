@@ -1,9 +1,15 @@
 from django.db import models
 
 class Project(models.Model):
+    STATUS_CHOICES = [
+        ('current', 'Current'),
+        ('finished', 'Finished'),
+        ('upcoming', 'Upcoming'),
+    ]
     name = models.CharField(max_length=255)
     client = models.CharField(max_length=255)
     budget = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='current')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

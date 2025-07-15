@@ -1,15 +1,16 @@
 from django.views.generic import ListView, DetailView,  CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Project
 from estimates.models import EstimateComponent
 
-class ProjectListView(ListView):
+class ProjectListView(LoginRequiredMixin, ListView):
     model = Project
     template_name = 'projects/project_list.html'
     context_object_name = 'projects'
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
     template_name = 'projects/project_detail.html'
     context_object_name = 'project'
@@ -21,19 +22,23 @@ class ProjectDetailView(DetailView):
         context['total_cost'] = sum(c.cost for c in components)
         return context
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Project
     fields = ['name', 'client', 'budget']
     template_name = 'projects/project_form.html'
     success_url = reverse_lazy('project-list')
 
-class ProjectUpdateView(UpdateView):
+    def test_func(self):
+        return self.request.user.groups.filter(name='Manager').exists()
+
+
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     fields = ['name', 'client', 'budget']
     template_name = 'projects/project_form.html'
     success_url = reverse_lazy('project-list')
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     template_name = 'projects/project_confirm_delete.html'
     success_url = reverse_lazy('project-list')

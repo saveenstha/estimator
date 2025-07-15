@@ -1,0 +1,32 @@
+
+{% extends 'base.html'%}
+{% load static %}
+
+{% block title%}
+  KarunaTrader | Logged Out
+{% endblock %}
+
+{% block content %}
+
+<div class="login-box">
+  <div class="login-logo">
+    <a href="{% url 'index2' %}"><b>Login </b></a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">You've logged out from your session</p>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'mainapp/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'mainapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'mainapp/dist/js/adminlte.min.js' %}"></script>
+
+{% endblock %}
