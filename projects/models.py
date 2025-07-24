@@ -7,7 +7,11 @@ class Project(models.Model):
         ('upcoming', 'Upcoming'),
     ]
     name = models.CharField(max_length=255)
-    client = models.CharField(max_length=255)
+    client = models.CharField(max_length=255, blank=True)
+    location = models.CharField(max_length=255, blank=True)
+    owner = models.CharField(max_length=255, blank=True)
+    engineer = models.CharField(max_length=255, blank=True)
+    report_date = models.DateField(null=True, blank=True)
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='current')
     created_at = models.DateTimeField(auto_now_add=True)

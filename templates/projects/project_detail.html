@@ -10,4 +10,16 @@
     {% endfor %}
   </ul>
   <p><strong>Total Estimated Cost: Rs. {{ total_cost }}</strong></p>
+
+    <h4>Drawings</h4>
+    <ul class="list-group">
+      {% for drawing in project.drawing_set.all %}
+        <li class="list-group-item">
+          {{ drawing.get_type_display }} -
+          <a href="{{ drawing.file.url }}">View File</a> |
+          <a href="{% url 'drawing-ocr' drawing.pk %}" class="btn btn-sm btn-outline-primary">Run OCR</a>
+        </li>
+      {% endfor %}
+    </ul>
+
 {% endblock %}

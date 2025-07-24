@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+import pytesseract
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -112,3 +113,5 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Update as needed

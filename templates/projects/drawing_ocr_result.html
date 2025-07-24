@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>OCR Parsing for {{ drawing.project.name }} - {{ drawing.type }}</h2>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% else %}
+  <h4>Extracted Text</h4>
+  <pre>{{ raw_text }}</pre>
+
+  <h4>Parsed Components</h4>
+  <ul class="list-group">
+    {% for comp in parsed_components %}
+      <li class="list-group-item">
+        {{ comp.name }} – {{ comp.quantity }}
+      </li>
+    {% empty %}
+      <li class="list-group-item">No valid data extracted.</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<a href="{% url 'project-detail' drawing.project.id %}" class="btn btn-secondary mt-3">Back to Project</a>
+{% endblock %}

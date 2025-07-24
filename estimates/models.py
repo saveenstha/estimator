@@ -3,7 +3,7 @@ from projects.models import Project
 
 
 class MaterialCategory(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -22,10 +22,13 @@ class EstimateComponent(models.Model):
     floor_number = models.IntegerField()
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(null=True, blank=True)  # Add detailed description of work
+    unit = models.CharField(max_length=50, default=1)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, default=1)
 
     @property
     def cost(self):
-        return self.quantity * self.material.rate
+        return self.quantity * self.rate
 
     def __str__(self):
         return f"{self.project.name} - Floor {self.floor_number} - {self.material.name}"

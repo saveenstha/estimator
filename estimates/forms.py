@@ -22,5 +22,12 @@ class EstimateComponentForm(forms.ModelForm):
         model = EstimateComponent
         fields = ['project', 'floor_number', 'material', 'quantity']
 
+
+class FloorEstimateForm(forms.ModelForm):
+    class Meta:
+        model = EstimateComponent
+        fields = ['project', 'floor_number', 'description', 'material', 'quantity', 'unit', 'rate']
+
+
 class EstimateCSVUploadForm(forms.Form):
     csv_file = forms.FileField()
