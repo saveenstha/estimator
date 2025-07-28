@@ -1,0 +1,350 @@
+[
+    {
+        "model": "projects.Project",
+        "pk": 1,
+        "fields": {
+            "name": "Khadka Residential Building",
+            "client": "Mrs. Bodh Kumari Khadka",
+            "location": "Kageshori Manahara Municipality, Nepal",
+            "owner": "Mrs. Bodh Kumari Khadka",
+            "engineer": "Er. Manoj Shrestha",
+            "report_date": "2025-07-27",
+            "budget": 500000.00,
+            "status": "current",
+            "created_at": "2025-07-27T09:00:00Z",
+            "number_of_storeys": 3
+        }
+    },
+    {
+        "model": "projects.Drawing",
+        "pk": 1,
+        "fields": {
+            "project": 1,
+            "type": "structural",
+            "file": "drawings/khadka_structural_analysis.pdf"
+        }
+    },
+
+    {
+        "model": "estimates.MaterialCategory",
+        "pk": 3,
+        "fields": {
+            "name": "Masonry"
+        }
+    },
+    {
+        "model": "estimates.Material",
+        "pk": 1,
+        "fields": {
+            "name": "Concrete (M20)",
+            "unit": "m³",
+            "rate": 100.00,
+            "category": 1,
+            "grade": "M20",
+            "standard": "NBC 105:2020"
+        }
+    },
+    {
+        "model": "estimates.Material",
+        "pk": 2,
+        "fields": {
+            "name": "Steel (Fe 500)",
+            "unit": "kg",
+            "rate": 1.50,
+            "category": 2,
+            "grade": "Fe 500",
+            "standard": "NBC 105:2020"
+        }
+    },
+    {
+        "model": "estimates.Material",
+        "pk": 3,
+        "fields": {
+            "name": "Brick",
+            "unit": "unit",
+            "rate": 0.20,
+            "category": 3,
+            "grade": "",
+            "standard": ""
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 1,
+        "fields": {
+            "project": 1,
+            "floor_number": 1,
+            "material": 1,
+            "quantity": 10.99,
+            "description": "Slab: 125 mm thick, 87.89 m²",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 4394.50,
+            "overhead_cost": 1000.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 2,
+        "fields": {
+            "project": 1,
+            "floor_number": 1,
+            "material": 1,
+            "quantity": 4.63,
+            "description": "Columns: 350x350 mm, 12 units",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 2400.00,
+            "overhead_cost": 500.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 3,
+        "fields": {
+            "project": 1,
+            "floor_number": 1,
+            "material": 1,
+            "quantity": 16.31,
+            "description": "Beams: Main 225x425 mm, Plinth 225x300 mm",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 10000.00,
+            "overhead_cost": 2000.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 4,
+        "fields": {
+            "project": 1,
+            "floor_number": 1,
+            "material": 1,
+            "quantity": 23.56,
+            "description": "Footings: 6 at 2.13x2.13 m, 6 at 1.82x1.82 m",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 6000.00,
+            "overhead_cost": 1000.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 5,
+        "fields": {
+            "project": 1,
+            "floor_number": 1,
+            "material": 2,
+            "quantity": 807.75,
+            "description": "Steel for columns and beams",
+            "unit": "kg",
+            "rate": 1.50,
+            "labor_cost": 500.00,
+            "overhead_cost": 200.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 6,
+        "fields": {
+            "project": 1,
+            "floor_number": 1,
+            "material": 3,
+            "quantity": 2000,
+            "description": "Brick walls: 250 mm thick, 200 m²",
+            "unit": "unit",
+            "rate": 0.20,
+            "labor_cost": 2000.00,
+            "overhead_cost": 500.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 7,
+        "fields": {
+            "project": 1,
+            "floor_number": 2,
+            "material": 1,
+            "quantity": 10.99,
+            "description": "Slab: 125 mm thick, 87.89 m²",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 4394.50,
+            "overhead_cost": 1000.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 8,
+        "fields": {
+            "project": 1,
+            "floor_number": 2,
+            "material": 1,
+            "quantity": 4.63,
+            "description": "Columns: 350x350 mm, 12 units",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 2400.00,
+            "overhead_cost": 500.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 9,
+        "fields": {
+            "project": 1,
+            "floor_number": 2,
+            "material": 1,
+            "quantity": 16.31,
+            "description": "Beams: Main 225x425 mm, Plinth 225x300 mm",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 10000.00,
+            "overhead_cost": 2000.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 10,
+        "fields": {
+            "project": 1,
+            "floor_number": 2,
+            "material": 2,
+            "quantity": 807.75,
+            "description": "Steel for columns and beams",
+            "unit": "kg",
+            "rate": 1.50,
+            "labor_cost": 500.00,
+            "overhead_cost": 200.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 11,
+        "fields": {
+            "project": 1,
+            "floor_number": 2,
+            "material": 3,
+            "quantity": 2000,
+            "description": "Brick walls: 250 mm thick, 200 m²",
+            "unit": "unit",
+            "rate": 0.20,
+            "labor_cost": 2000.00,
+            "overhead_cost": 500.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 12,
+        "fields": {
+            "project": 1,
+            "floor_number": 3,
+            "material": 1,
+            "quantity": 12.99,
+            "description": "Slab: 125 mm thick, 87.89 m² + staircase cover",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 5194.50,
+            "overhead_cost": 1200.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 13,
+        "fields": {
+            "project": 1,
+            "floor_number": 3,
+            "material": 1,
+            "quantity": 4.63,
+            "description": "Columns: 350x350 mm, 12 units",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 2400.00,
+            "overhead_cost": 500.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 14,
+        "fields": {
+            "project": 1,
+            "floor_number": 3,
+            "material": 1,
+            "quantity": 16.31,
+            "description": "Beams: Main 225x425 mm, Plinth 225x300 mm",
+            "unit": "m³",
+            "rate": 100.00,
+            "labor_cost": 10000.00,
+            "overhead_cost": 2000.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 15,
+        "fields": {
+            "project": 1,
+            "floor_number": 3,
+            "material": 2,
+            "quantity": 807.75,
+            "description": "Steel for columns and beams",
+            "unit": "kg",
+            "rate": 1.50,
+            "labor_cost": 500.00,
+            "overhead_cost": 200.00
+        }
+    },
+    {
+        "model": "estimates.EstimateComponent",
+        "pk": 16,
+        "fields": {
+            "project": 1,
+            "floor_number": 3,
+            "material": 3,
+            "quantity": 2000,
+            "description": "Brick walls: 250 mm thick, 200 m²",
+            "unit": "unit",
+            "rate": 0.20,
+            "labor_cost": 2000.00,
+            "overhead_cost": 500.00
+        }
+    },
+    {
+        "model": "estimates.Procurement",
+        "pk": 1,
+        "fields": {
+            "project": 1,
+            "material": 1,
+            "quantity_required": 110.42,
+            "quantity_procured": 50.00,
+            "date_procured": "2025-07-27",
+            "supplier": "Nepal Concrete Suppliers",
+            "cost": 5000.00
+        }
+    },
+    {
+        "model": "estimates.Procurement",
+        "pk": 2,
+        "fields": {
+            "project": 1,
+            "material": 2,
+            "quantity_required": 2423.25,
+            "quantity_procured": 1000.00,
+            "date_procured": "2025-07-27",
+            "supplier": "Kathmandu Steel Co.",
+            "cost": 1500.00
+        }
+    },
+    {
+        "model": "estimates.Procurement",
+        "pk": 3,
+        "fields": {
+            "project": 1,
+            "material": 3,
+            "quantity_required": 6000,
+            "quantity_procured": 3000,
+            "date_procured": "2025-07-27",
+            "supplier": "Local Brick Factory",
+            "cost": 600.00
+        }
+    }
+]

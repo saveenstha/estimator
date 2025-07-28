@@ -15,6 +15,7 @@ class Project(models.Model):
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='current')
     created_at = models.DateTimeField(auto_now_add=True)
+    number_of_storeys = models.IntegerField(default=1)  # New field
 
     def __str__(self):
         return self.name

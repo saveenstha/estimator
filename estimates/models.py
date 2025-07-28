@@ -13,6 +13,8 @@ class Material(models.Model):
     unit = models.CharField(max_length=50)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(MaterialCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    grade = models.CharField(max_length=50, blank=True)  # e.g., M20 for concrete, Fe 500 for steel
+    standard = models.CharField(max_length=100, blank=True)  # e.g., NBC 105:2020
 
     def __str__(self):
         return self.name
@@ -25,10 +27,12 @@ class EstimateComponent(models.Model):
     description = models.TextField(null=True, blank=True)  # Add detailed description of work
     unit = models.CharField(max_length=50, default=1)
     rate = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    labor_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # New field for labor cost
+    overhead_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # New field for overheads
 
     @property
     def cost(self):
-        return self.quantity * self.rate
+        return self.quantity * self.rate + self.labor_cost + self.overhead_cost
 
     def __str__(self):
         return f"{self.project.name} - Floor {self.floor_number} - {self.material.name}"

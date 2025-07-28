@@ -4,7 +4,7 @@ from .views import (
     EstimateCreateView, EstimateDeleteView, EstimateCSVUploadView,
     MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView,
     ProcurementListView, ProcurementCreateView, ProcurementDeleteView, ProcurementDetailView, ProcurementUpdateView,
-    FloorEstimateCreateView
+    FloorEstimateCreateView, CostReportView
 )
 
 urlpatterns = [
@@ -27,5 +27,6 @@ urlpatterns = [
     path('procurements/<int:pk>/delete/', ProcurementDeleteView.as_view(), name='procurement-delete'),
 
     path('add-floor-estimate/', FloorEstimateCreateView.as_view(), name='floor-estimate-add'),
+    path('<int:project_id>/cost-report/', CostReportView.as_view(), name='cost-report'),
 
 ]

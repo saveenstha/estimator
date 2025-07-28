@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     ProjectListView, ProjectDetailView, ProjectCreateView, ProjectDeleteView, ProjectUpdateView,
-    DrawingOCRView, ProjectAnalysisCreateView
+    DrawingOCRView, ProjectAnalysisCreateView,
                     )
 
 urlpatterns = [
@@ -13,5 +13,4 @@ urlpatterns = [
     path('add-analysis/', ProjectAnalysisCreateView.as_view(), name='project-analysis-add'),
 
     path('drawing/<int:pk>/ocr/', DrawingOCRView.as_view(), name='drawing-ocr'),
-
 ]

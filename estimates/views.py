@@ -1,19 +1,17 @@
 from django.views.generic import (
     ListView, DetailView, CreateView,
-    UpdateView, DeleteView, FormView
+    UpdateView, DeleteView, FormView, View
 )
 from django.urls import reverse_lazy
-from  django.shortcuts import get_object_or_404
+from  django.shortcuts import get_object_or_404, render
+from .models import EstimateComponent, Material, MaterialCategory, Procurement
 
-from .models import (
-    EstimateComponent, Material, MaterialCategory, Procurement
-)
 from .forms import (
     EstimateComponentForm, EstimateCSVUploadForm,
     MaterialForm, ProcurementForm, FloorEstimateForm
 )
 from projects.models import Project
-
+from django.http import HttpResponse
 import csv
 import io
 
@@ -169,3 +167,36 @@ class ProcurementDeleteView(DeleteView):
     template_name = 'estimates/procurement_confirm_delete.html'
     success_url = reverse_lazy('procurement-list')
 
+
+class CostReportView(View):
+    template_name = 'estimates/cost_report.html'
+
+    def get(self, request, project_id):
+        project = get_object_or_404(Project, id=project_id)
+        components = EstimateComponent.objects.filter(project=project)
+        per_floor_costs = [
+            {
+                'floor': i,
+                'cost': sum(c.cost for c in components.filter(floor_number=i)),
+                'materials': [
+                    {'name': c.material.name, 'quantity': c.quantity, 'cost': c.cost}
+                    for c in components.filter(floor_number=i)
+                ]
+            }
+            for i in range(1, project.number_of_storeys + 1)
+        ]
+        total_cost = sum(c.cost for c in components)
+        profit_margin = ((project.budget - total_cost) / project.budget * 100) if project.budget else 0
+
+        # Chart data
+        labels = [f"Floor {i}" for i in range(1, project.number_of_storeys + 1)]
+        costs = [pc['cost'] for pc in per_floor_costs]
+
+        return render(request, self.template_name, {
+            'project': project,
+            'per_floor_costs': per_floor_costs,
+            'total_cost': total_cost,
+            'profit_margin': profit_margin,
+            'labels': labels,
+            'costs': costs
+        })

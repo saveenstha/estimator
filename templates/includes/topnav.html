@@ -30,14 +30,18 @@
       <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="fas fa-user-circle"></i> {{ user.username }}
       </a>
-      <div class="dropdown-menu dropdown-menu-right">
-        <a href="#profile" class="dropdown-item">Profile</a>
-        <div class="dropdown-divider"></div>
-        <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
-      </div>
     </li>
+        <li>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="#profile" class="dropdown-item">Profile</a>
+                <div class="dropdown-divider"></div>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Log Out</button>
+                </form>
+            </div>
+        </li>
     {% else %}
-
     <li class="nav-item">
       <a href="{% url 'login' %}" class="nav-link">Login</a>
     </li>
