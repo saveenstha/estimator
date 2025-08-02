@@ -3,46 +3,226 @@
 
 {% block content %}
 <h2>Dashboard</h2>
-    <!-- chart -->
-    <canvas id="chartBudgets" width="400" height="160"></canvas>
-    <h3 class="mt-5">Projects by Status</h3>
-        <div class="row">
-          {% for status, qs in status_projects %}
-          <div class="col-md-4">
-            <h5>{{ status }} ({{ qs|length }})</h5>
-            <ul class="list-group">
-              {% for p in qs %}
-              <li class="list-group-item">{{ p.name }} – Rs. {{ p.budget }}</li>
-              {% empty %}
-              <li class="list-group-item text-muted">No {{ status|lower }} projects.</li>
-              {% endfor %}
-            </ul>
-          </div>
-          {% endfor %}
-</div>
-    <h4 class="mt-5">Procurement Overview</h4>
-    <ul class="list-group mb-3">
-      <li class="list-group-item">Total Procurement Records: {{ total_procurements }}</li>
-      <li class="list-group-item text-success">Fulfilled: {{ fulfilled }}</li>
-      <li class="list-group-item text-danger">Pending: {{ pending }}</li>
-    </ul>
-    <a href="{% url 'procurement-list' %}" class="btn btn-outline-primary">View All Procurements</a>
 
+    <!-- Debug Data (for troubleshooting, remove in production) -->
+        <div class="alert alert-info" style="display: none;">
+            <h5>Debug Data</h5>
+            <p>Labels: {{ labels }}</p>
+            <p>Budgets: {{ budgets }}</p>
+            <p>Floor Labels: {{ floor_labels }}</p>
+            <p>Floor Costs: {{ floor_costs }}</p>
+        </div>
 
-{% endblock %}
+     <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Total Projects</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_projects }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Total Project Cost</div>
+                    <div class="card-body">
+                        <h5 class="card-title">${{ total_cost|floatformat:2 }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Average Profit Margin</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ avg_profit_margin|floatformat:2 }}%</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Budget Chart -->
+        <div class="card mb-4">
+            <div class="card-header">Project Budgets</div>
+            <div class="card-body">
+                <canvas id="chartBudgets" height="100"></canvas>
+            </div>
+        </div>
+
+    <!-- Per-Floor Cost Chart -->
+        <div class="card mb-4">
+            <div class="card-header">Per-Floor Cost Breakdown</div>
+            <div class="card-body">
+                <canvas id="chartPerFloorCosts" height="100"></canvas>
+            </div>
+        </div>
+
+        <!-- Projects by Status -->
+        <h3 class="mt-5">Projects by Status</h3>
+        <div class="row mb-4">
+            {% for status, qs in status_projects.items %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">{{ status }} ({{ qs|length }})</div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Budget</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in qs %}
+                                <tr>
+                                    <td><a href="{% url 'project-detail' p.id %}">{{ p.name }}</a></td>
+                                    <td>${{ p.budget|floatformat:2 }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-muted">No {{ status|lower }} projects.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Procurement Overview -->
+        <h3 class="mt-5">Procurement Overview</h3>
+        <div class="card mb-4">
+            <div class="card-header">Procurement Summary</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Total Procurement Records: {{ total_procurements }}</li>
+                    <li class="list-group-item text-success">Fulfilled: {{ fulfilled }}</li>
+                    <li class="list-group-item text-danger">Pending: {{ pending }}</li>
+                </ul>
+                <a href="{% url 'procurement-list' %}" class="btn btn-outline-primary mt-3">View All Procurements</a>
+            </div>
+        </div>
+
+        <!-- Procurement Alerts -->
+        {% if urgent_procurements %}
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">Urgent Procurement Alerts</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for proc in urgent_procurements %}
+                    <li class="list-group-item alert-urgent">
+                        {{ proc.material.name }} for {{ proc.project.name }}: {{ proc.quantity_required }} {{ proc.material.unit }} needed {% if proc.due_date %}by {{ proc.due_date|date:"Y-m-d" }}{% else %}(no due date){% endif %} ({{ proc.progress_percent }}% complete)
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const data = {
-          labels: {{ labels|safe }},
-          datasets: [{
-            label: 'Budget per Project',
-            backgroundColor: 'rgba(54,73,93,.5)',
-            borderColor: '#36495d',
-            data: {{ budgets|safe }},
-          }]
-        };
-        new Chart(document.getElementById('chartBudgets'), {
-          type: 'bar',
-          data: data,
-          options: {}
-        });
-        </script>
+        // Ensure data is valid before rendering charts
+        try {
+            // Project Budget Chart
+            const budgetData = {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: 'Budget per Project ($)',
+                    backgroundColor: 'rgba(54, 73, 93, 0.5)',
+                    borderColor: '#36495d',
+                    borderWidth: 1,
+                    data: {{ budgets|safe }}
+                }]
+            };
+            new Chart(document.getElementById('chartBudgets'), {
+                type: 'bar',
+                data: budgetData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Budget ($)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: true }
+                    }
+                }
+            });
+
+            // Per-Floor Cost Chart
+            const floorCostData = {
+                labels: {{ floor_labels|safe }},
+                datasets: [{
+                    label: 'Cost per Floor ($)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    data: {{ floor_costs|safe }}
+                }]
+            };
+            new Chart(document.getElementById('chartPerFloorCosts'), {
+                type: 'bar',
+                data: floorCostData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Cost ($)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: true }
+                    }
+                }
+            });
+        } catch (e) {
+            console.error("Chart rendering error:", e);
+        }
+    </script>
+{##}
+{#    <!-- chart -->#}
+{#    <canvas id="chartBudgets" width="400" height="160"></canvas>#}
+{#    <h3 class="mt-5">Projects by Status</h3>#}
+{#        <div class="row">#}
+{#          {% for status, qs in status_projects %}#}
+{#          <div class="col-md-4">#}
+{#            <h5>{{ status }} ({{ qs|length }})</h5>#}
+{#            <ul class="list-group">#}
+{#              {% for p in qs %}#}
+{#              <li class="list-group-item">{{ p.name }} – Rs. {{ p.budget }}</li>#}
+{#              {% empty %}#}
+{#              <li class="list-group-item text-muted">No {{ status|lower }} projects.</li>#}
+{#              {% endfor %}#}
+{#            </ul>#}
+{#          </div>#}
+{#          {% endfor %}#}
+{#</div>#}
+{#    <h4 class="mt-5">Procurement Overview</h4>#}
+{#    <ul class="list-group mb-3">#}
+{#      <li class="list-group-item">Total Procurement Records: {{ total_procurements }}</li>#}
+{#      <li class="list-group-item text-success">Fulfilled: {{ fulfilled }}</li>#}
+{#      <li class="list-group-item text-danger">Pending: {{ pending }}</li>#}
+{#    </ul>#}
+{#    <a href="{% url 'procurement-list' %}" class="btn btn-outline-primary">View All Procurements</a>#}
+{##}
+{##}
+{#    <script>#}
+{#        const data = {#}
+{#          labels: {{ labels|safe }},#}
+{#          datasets: [{#}
+{#            label: 'Budget per Project',#}
+{#            backgroundColor: 'rgba(54,73,93,.5)',#}
+{#            borderColor: '#36495d',#}
+{#            data: {{ budgets|safe }},#}
+{#          }]#}
+{#        };#}
+{#        new Chart(document.getElementById('chartBudgets'), {#}
+{#          type: 'bar',#}
+{#          data: data,#}
+{#          options: {}#}
+{#        });#}
+{#        </script>#}
+{% endblock %}

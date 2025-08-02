@@ -46,6 +46,7 @@ class Procurement(models.Model):
     date_procured = models.DateField(null=True, blank=True)
     supplier = models.CharField(max_length=255, blank=True)
     cost = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    due_date = models.DateField(null=True, blank=True)
 
     def is_fulfilled(self):
         return self.quantity_procured >= self.quantity_required

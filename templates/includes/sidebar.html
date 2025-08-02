@@ -1,0 +1,85 @@
+
+<nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar sidebar-offcanvas" id="sidebar">
+    <div class="sidebar-sticky">
+        <!-- Profile Section -->
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+                <div class="nav-profile-image">
+                    <img src="../assets/images/faces/face1.jpg" alt="profile" />
+                    <span class="login-status online"></span>
+                </div>
+                <div class="nav-profile-text d-flex flex-column">
+                    <span class="font-weight-bold mb-2">David Grey. H</span>
+                    <span class="text-secondary text-small">Project Manager</span>
+                </div>
+                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+            </a>
+        </li>
+
+        <h4 class="text-center py-3">Estimation Software</h4>
+        <ul class="nav flex-column">
+            <!-- Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                    <span class="menu-title">Dashboard</span>
+                    <i class="mdi mdi-home menu-icon"></i>
+                </a>
+            </li>
+
+            <!-- Projects -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'project-list' %}active{% endif %}" href="{% url 'project-list' %}">
+                    <span class="menu-title">Projects</span>
+                    <i class="mdi mdi-briefcase menu-icon"></i>
+                </a>
+            </li>
+
+            <!-- Estimates -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'estimate-list' %}active{% endif %}" href="{% url 'estimate-list' %}">
+                    <span class="menu-title">Estimates</span>
+                    <i class="mdi mdi-calculator menu-icon"></i>
+                </a>
+            </li>
+
+            <!-- Materials -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'material-list' %}active{% endif %}" href="{% url 'material-list' %}">
+                    <span class="menu-title">Materials</span>
+                    <i class="mdi mdi-cube menu-icon"></i>
+                </a>
+            </li>
+
+            <!-- Procurements -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'procurement-list' %}active{% endif %}" href="{% url 'procurement-list' %}">
+                    <span class="menu-title">Procurements</span>
+                    <i class="mdi mdi-cart menu-icon"></i>
+                </a>
+            </li>
+
+            <!-- Additional Sections with Collapse -->
+            <!-- Example of collapsed menu -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                    <span class="menu-title">Basic UI Elements</span>
+                    <i class="menu-arrow"></i>
+                    <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+                </a>
+                <div class="collapse" id="ui-basic">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Buttons</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dropdowns</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Typography</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
