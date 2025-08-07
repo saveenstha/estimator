@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: estimator
+      POSTGRES_USER: estimator_user
+      POSTGRES_PASSWORD: estimator_pass
+
+  web:
+    build: .
+    command: gunicorn estimator.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DEBUG: '0'
+      DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
+      DB_NAME: estimator
+      DB_USER: estimator_user
+      DB_PASSWORD: estimator_pass
+      DB_HOST: db
+      DB_PORT: 5432
+
+volumes:
+  postgres_data:
