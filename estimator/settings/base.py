@@ -103,6 +103,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATIC_ROOT = env('STATIC_ROOT', default=os.path.join(BASE_DIR, 'staticfiles'))
+
 
 # settings.py - Add MEDIA settings
 MEDIA_URL = '/media/'

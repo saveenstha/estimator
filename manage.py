@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 import os
 import sys
+import environ
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'estimator.settings.dev')
+    # Load environment from .env
+    env = environ.Env()
+    environ.Env.read_env()
+
+    # Get ENVIRONMENT value from .env (default to 'dev')
+    environment = env('ENVIRONMENT', default='dev')
+
+    # Set correct settings module dynamically
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'estimator.settings.{environment}')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
