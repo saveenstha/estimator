@@ -20,7 +20,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t saveen/estimator:latest .
-
+        run: |
+          docker build \
+            --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
+            -t saveen/estimator:latest .
       - name: Push Docker image
         run: docker push saveen/estimator:latest

@@ -9,7 +9,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env(
     DEBUG=(bool, False)
 )
-environ.Env.read_env(BASE_DIR / '.env')  # Looks for .env in project root
+env_file = BASE_DIR / '.env'
+if env_file.exists():
+    environ.Env.read_env(env_file)
+
 
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
