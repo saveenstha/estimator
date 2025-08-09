@@ -4,6 +4,8 @@ FROM python:3.12-slim
 # Set environment vars
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ARG SECRET_KEY
+ENV SECRET_KEY=${SECRET_KEY}
 
 # Set working directory
 WORKDIR /app
