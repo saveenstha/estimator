@@ -5,6 +5,7 @@
     <a class="navbar-brand brand-logo" href="{% url 'home' %}"><img src="{% static 'images/estimator.png' %}" alt="logo" /></a>
     <a class="navbar-brand brand-logo-mini" href="{% url 'home' %}"><img src="{% static 'images/logo-mini.svg' %}" alt="logo" /></a>
   </div>
+      {% if user.is_authenticated %}
   <div class="navbar-menu-wrapper d-flex align-items-stretch">
     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
       <span class="mdi mdi-menu"></span>
@@ -20,7 +21,6 @@
       </form>
     </div>
     <ul class="navbar-nav navbar-nav-right">
-      {% if user.is_authenticated %}
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
           <div class="nav-profile-img">
@@ -43,11 +43,6 @@
           </form>
         </div>
       </li>
-      {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login' %}" class="nav-link">Login</a>
-      </li>
-      {% endif %}
       <li class="nav-item d-none d-lg-block full-screen-link">
         <a class="nav-link">
           <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
@@ -67,6 +62,11 @@
         </a>
         <!-- Notifications dropdown menu here -->
       </li>
+      {% else %}
+      <li class="nav-item">
+        <a href="{% url 'login' %}" class="nav-link">Login</a>
+      </li>
+      {% endif %}
     </ul>
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
       <span class="mdi mdi-menu"></span>

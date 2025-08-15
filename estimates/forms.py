@@ -45,7 +45,8 @@ class MaterialForm(forms.ModelForm):
 class ProcurementForm(forms.ModelForm):
     class Meta:
         model = Procurement
-        fields = ['project', 'material', 'quantity_required', 'quantity_procured', 'date_procured', 'supplier', 'cost']
+        fields = ['project', 'material', 'quantity_required', 'quantity_procured', 'date_procured', 'supplier',
+                  'cost', 'due_date']
         widgets = {
             'project': forms.Select(attrs={'class': 'form-control'}),
             'material': forms.Select(attrs={'class': 'form-control'}),
@@ -54,6 +55,7 @@ class ProcurementForm(forms.ModelForm):
             'date_procured': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'supplier': forms.TextInput(attrs={'class': 'form-control'}),
             'cost': forms.NumberInput(attrs={'class': 'form-control'}),
+            'due_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
 class EstimateCSVUploadForm(forms.Form):

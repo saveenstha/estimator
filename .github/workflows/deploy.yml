@@ -1,0 +1,41 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 2. Build & push image to Docker Hub
+      - name: Build and push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USER }}/estimator:latest
+          docker build --target prod -t $IMAGE .
+          docker push $IMAGE
+
+      # 3. SSH into EC2 and deploy
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/app
+            docker pull ${{ secrets.DOCKERHUB_USER }}/estimator:latest
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+            docker image prune -f
