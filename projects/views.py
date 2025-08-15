@@ -36,14 +36,15 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         ]
         return context
 
-class ProjectCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+# class ProjectCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     fields = ['name', 'client', 'budget','number_of_storeys']
     template_name = 'projects/project_form.html'
     success_url = reverse_lazy('project-list')
 
-    def test_func(self):
-        return self.request.user.groups.filter(name='Manager').exists()
+    # def test_func(self):
+    #     return self.request.user.groups.filter(name='Manager').exists()
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):

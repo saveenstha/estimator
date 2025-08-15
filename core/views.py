@@ -26,15 +26,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             'Upcoming': projects.filter(status='upcoming')
         }
         total_projects = projects.count()
-
         total_cost = 0
         profit_margins = []
+
         for p in projects:
-            project_cost = sum(c.cost for c in EstimateComponent.objects.filter(project=p))
+            project_cost = sum(float(c.cost) for c in EstimateComponent.objects.filter(project=p))
             total_cost += project_cost
             if p.budget > 0:
-                profit_margin = ((p.budget - project_cost) / p.budget * 100)
+                profit_margin = ((float(p.budget) - project_cost) / float(p.budget) * 100)
                 profit_margins.append(profit_margin)
+
         avg_profit_margin = sum(profit_margins) / len(profit_margins) if profit_margins else 0
 
         # Procurement Data
@@ -46,10 +47,20 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         # Urgent procurements (handle missing due_date gracefully)
         urgent_procurements = []
         try:
-            urgent_procurements = procurements.filter(
-                quantity_procured__lt=models.F('quantity_required'),
-                due_date__lte=timezone.now().date() + timedelta(days=7)
-            )
+            for proc in procurements:
+                urgency = 'normal'
+                if proc.quantity_procured >= proc.quantity_required:
+                    urgency = 'completed'
+                elif proc.due_date:
+                    if proc.due_date < timezone.now().date():
+                        urgency = 'overdue'
+                    elif proc.due_date <= timezone.now().date() + timedelta(days=7):
+                        urgency = 'due-soon'
+                urgent_procurements.append({
+                    'proc': proc,
+                    'progress': proc.progress_percent(),
+                    'urgency': urgency
+                })
         except AttributeError:
             pass
 

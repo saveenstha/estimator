@@ -24,15 +24,15 @@
 </head>
   <body>
     <div class="container-scroller">
+      {% if user.is_authenticated %}
     {% include 'includes/topnav.html' %}
       <div class="container-fluid page-body-wrapper">
-      {% if user.is_authenticated %}
 
         <!-- Sidebar -->
         {% include 'includes/sidebar.html' %}
-      {% endif %}
         <div class="main-panel">
           <div class="content-wrapper">
+      {% endif %}
             {% block content %}
 
             {% endblock %}

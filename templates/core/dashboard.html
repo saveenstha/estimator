@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-header">Total Project Cost</div>
                     <div class="card-body">
-                        <h5 class="card-title">${{ total_cost|floatformat:2 }}</h5>
+                        <h5 class="card-title">NPR {{ total_cost|floatformat:2 }}</h5>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                                 {% for p in qs %}
                                 <tr>
                                     <td><a href="{% url 'project-detail' p.id %}">{{ p.name }}</a></td>
-                                    <td>${{ p.budget|floatformat:2 }}</td>
+                                    <td>NPR {{ p.budget|floatformat:2 }}</td>
                                 </tr>
                                 {% empty %}
                                 <tr>
@@ -93,33 +93,62 @@
 
         <!-- Procurement Overview -->
         <h3 class="mt-5">Procurement Overview</h3>
-        <div class="card mb-4">
-            <div class="card-header">Procurement Summary</div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Total Procurement Records: {{ total_procurements }}</li>
-                    <li class="list-group-item text-success">Fulfilled: {{ fulfilled }}</li>
-                    <li class="list-group-item text-danger">Pending: {{ pending }}</li>
-                </ul>
-                <a href="{% url 'procurement-list' %}" class="btn btn-outline-primary mt-3">View All Procurements</a>
+        <div class="row mb-6">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Procurement Summary</div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Total Procurement Records: {{ total_procurements }}</li>
+                            <li class="list-group-item text-success">Fulfilled: {{ fulfilled }}</li>
+                            <li class="list-group-item text-danger">Pending: {{ pending }}</li>
+                        </ul>
+                        <a href="{% url 'procurement-list' %}" class="btn btn-outline-primary mt-3">View All Procurements</a>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Procurement Alerts -->
+        <div class="col-md-6">
+
+            {% if urgent_procurements %}
+            <div class="card">
+                <div class="card-header text-dark">Procurement Progress</div>
+                <div class="card-body">
+                    {% for item in urgent_procurements %}
+                    <div class="mb-3 p-2 border rounded
+                        {% if item.urgency == 'completed' %}bg-success text-white
+                        {% elif item.urgency == 'overdue' %}bg-danger text-white
+                        {% elif item.urgency == 'due-soon' %}bg-warning
+                        {% else %}bg-light
+                        {% endif %}">
+                        <strong>{{ item.proc.material.name }}</strong> — {{ item.proc.project.name }}
+                        ({{ item.proc.quantity_procured }}/{{ item.proc.quantity_required }} {{ item.proc.material.unit }})
+                        {% if item.proc.due_date %}
+                            <br><small>Due: {{ item.proc.due_date|date:"Y-m-d" }}</small>
+                        {% endif %}
+                        <div class="progress mt-1">
+                            <div class="progress-bar
+                                {% if item.urgency == 'completed' %}bg-success
+                                {% elif item.urgency == 'overdue' %}bg-danger
+                                {% elif item.urgency == 'due-soon' %}bg-warning text-dark
+                                {% else %}bg-info
+                                {% endif %}"
+                                role="progressbar"
+                                style="width: {{ item.progress }}%"
+                                aria-valuenow="{{ item.progress }}"
+                                aria-valuemin="0" aria-valuemax="100">
+                                {{ item.progress }}%
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             </div>
         </div>
 
-        <!-- Procurement Alerts -->
-        {% if urgent_procurements %}
-        <div class="card mb-4">
-            <div class="card-header bg-warning text-dark">Urgent Procurement Alerts</div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% for proc in urgent_procurements %}
-                    <li class="list-group-item alert-urgent">
-                        {{ proc.material.name }} for {{ proc.project.name }}: {{ proc.quantity_required }} {{ proc.material.unit }} needed {% if proc.due_date %}by {{ proc.due_date|date:"Y-m-d" }}{% else %}(no due date){% endif %} ({{ proc.progress_percent }}% complete)
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        {% endif %}
 
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

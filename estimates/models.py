@@ -46,15 +46,21 @@ class Procurement(models.Model):
     date_procured = models.DateField(null=True, blank=True)
     supplier = models.CharField(max_length=255, blank=True)
     cost = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    due_date = models.DateField(null=True, blank=True)
-
-    def is_fulfilled(self):
-        return self.quantity_procured >= self.quantity_required
+    due_date = models.DateField(null=True, blank=True, help_text="Date by which procurement must be completed.")
 
     def progress_percent(self):
         if self.quantity_required == 0:
-            return 0
-        return round((self.quantity_procured / self.quantity_required) * 100, 2)
+            return 100
+        return min(100, round((self.quantity_procured / self.quantity_required) * 100))
+
+    def is_urgent(self):
+        from django.utils import timezone
+        if not self.due_date:
+            return False
+        return self.quantity_procured < self.quantity_required and self.due_date <= timezone.now().date()
+
+    def is_fulfilled(self):
+        return self.quantity_procured >= self.quantity_required
 
     def __str__(self):
         return f"{self.project.name} - {self.material.name}"

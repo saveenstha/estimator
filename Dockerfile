@@ -1,11 +1,9 @@
 # Use official Python base image
-FROM python:3.12-slim
+FROM python:3.12-slim as base
 
 # Set environment vars
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ARG SECRET_KEY
-ENV SECRET_KEY=${SECRET_KEY}
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /app
@@ -24,6 +22,13 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project files
 COPY . .
 
+# ---- Production Stage ----
+FROM base as prod
+
+ARG SECRET_KEY
+ENV SECRET_KEY=${SECRET_KEY}
+ENV DJANGO_SETTINGS_MODULE=estimator.settings
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
@@ -32,3 +37,7 @@ EXPOSE 8000
 
 # Start gunicorn server
 CMD ["gunicorn", "estimator.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+# ---- Development Stage ----
+FROM base as dev
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
