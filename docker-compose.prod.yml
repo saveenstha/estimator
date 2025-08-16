@@ -4,17 +4,36 @@ services:
   web:
     image: ${DOCKER_USERNAME}/estimator:latest
     env_file: .env
-    command: gunicorn estimator.wsgi:application --bind 0.0.0.0:8000
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        python manage.py collectstatic --noinput &&
+        gunicorn estimator.wsgi:application --bind 0.0.0.0:8000
+      "
     depends_on:
       - db
     ports:
       - "8000:8000"
+    restart: always   # auto-restart if container crashes
 
   db:
     image: postgres:15
     env_file: .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always   # ensure db restarts on EC2 reboots
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles
+    depends_on:
+      - web
+    restart: always
 
 volumes:
   postgres_data:
+  static_volume:

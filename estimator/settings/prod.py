@@ -2,8 +2,6 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = [13.210.241.62]
-
 DATABASES = {
     'default': {
         'ENGINE': env('DB_ENGINE'),

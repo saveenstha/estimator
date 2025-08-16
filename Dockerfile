@@ -29,9 +29,6 @@ ARG SECRET_KEY
 ENV SECRET_KEY=${SECRET_KEY}
 ENV DJANGO_SETTINGS_MODULE=estimator.settings
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
 # Expose port
 EXPOSE 8000
 
