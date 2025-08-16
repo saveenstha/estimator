@@ -22,6 +22,7 @@ jobs:
 
       # 2. Build & push image to Docker Hub
       - name: Build and push Docker image
+
         run: |
           IMAGE=${{ secrets.DOCKER_USERNAME }}/estimator:latest
           docker build --target prod -t $IMAGE .
@@ -36,6 +37,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/app
-            docker pull ${{ secrets.DOCKER_USER }}/estimator:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/estimator:latest
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
             docker image prune -f
