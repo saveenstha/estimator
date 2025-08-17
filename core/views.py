@@ -9,7 +9,7 @@ from projects.models import Project
 from estimates.models import EstimateComponent, Procurement
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'core/home.html'
 
 
