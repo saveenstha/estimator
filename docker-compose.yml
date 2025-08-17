@@ -1,39 +1,39 @@
 version: '3.9'
 
 services:
-  web:
-    build:
-      context: .
-      target: prod
-    image: ${DOCKER_USERNAME}/estimator:latest
+  db:
+    image: postgres:15
+    restart: always
     env_file: .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    image: ${DOCKERHUB_USER}/estimator:${TAG}
+    restart: always
+    env_file: .env
+    depends_on:
+      - db
     command: >
       sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
              gunicorn estimator.wsgi:application --bind 0.0.0.0:8000"
-    depends_on:
-      - db
-    expose:
-      - "8000"
-    volumes:
-      - static_volume:/app/staticfiles
-
-  db:
-    image: postgres:15
-    env_file: .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "8000:8000"
 
   nginx:
     image: nginx:latest
+    restart: always
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - static_volume:/app/staticfiles:ro
     depends_on:
       - web
 
 volumes:
   postgres_data:
-  static_volume:
