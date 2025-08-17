@@ -36,7 +36,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/app
+            set -e
+            cd ~/estimator || git clone https://github.com/${{ github.repository }} ~/estimator
+            cd ~/estimator
+            git pull origin main
             docker pull ${{ secrets.DOCKER_USERNAME }}/estimator:latest
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+            docker-compose down -v
+            docker-compose up -d --build
             docker image prune -f
